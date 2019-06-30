@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: panda_moveit_config
+Description: Description of panda_moveit_config
+Version: 0.7.2
+Cflags: 
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: perception_cvut
+Description: Description of perception_cvut
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: 

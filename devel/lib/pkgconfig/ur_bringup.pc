@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: ur_bringup
+Description: Description of ur_bringup
+Version: 1.2.5
+Cflags: 
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: 
