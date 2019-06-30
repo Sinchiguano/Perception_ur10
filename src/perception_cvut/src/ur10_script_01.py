@@ -184,9 +184,11 @@ class UniversalRobot(object):
     wpose = move_group.get_current_pose().pose
     wpose.position.z -= scale * 0.2  # First move up (z)
     wpose.position.y += scale * 0.3  # and sideways (y)
+    wpose.position.y -= scale * 0.2
     waypoints.append(copy.deepcopy(wpose))
 
-    wpose.position.x += scale * 0.3  # Second move forward/backwards in (x)
+    wpose.position.x += scale * 0.5  # Second move forward/backwards in (x)
+    wpose.position.x -= scale * 0.2
     waypoints.append(copy.deepcopy(wpose))
 
     # wpose.position.y -= scale * 0.2  # Third move sideways (y)
@@ -389,23 +391,23 @@ def main():
             #Add object
             ###########
             object_ur10.add_box()
-            time.sleep(0.5)
+            time.sleep(1)
             object_ur10.attach_box()
-            time.sleep(0.5)
+            time.sleep(1)
 
             #Cartesian path with an object attached to the end effector
             ###########################################################
             cartesian_plan, fraction = object_ur10.plan_cartesian_path(scale=1)
             time.sleep(3)
             object_ur10.execute_plan(cartesian_plan)
-            time.sleep(2)
+            time.sleep(3)
 
             #Remove object
             ###########
             object_ur10.detach_box()
-            time.sleep(0.5)
+            time.sleep(1)
             object_ur10.remove_box()
-            time.sleep(0.5)
+            time.sleep(1)
             print "============ Python demo complete!"
             r.sleep()
         except rospy.ROSInterruptException:
