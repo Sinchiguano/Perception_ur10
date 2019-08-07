@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: robot
+Description: Description of robot
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: roscpp rospy std_msgs geometry_msgs moveit_core moveit_ros_planning_interface
