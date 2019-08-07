@@ -142,6 +142,7 @@ tests_tutorial_EXTERNAL_OBJECTS =
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/libmoveit_kinematics_metrics.so
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/libmoveit_dynamics_solver.so
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/libmoveit_utils.so
+/home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/libmoveit_test_utils.so
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /usr/lib/x86_64-linux-gnu/libfcl.so
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/libkdl_parser.so
 /home/casch/ws_moveit/devel/lib/moveit_tutorials/tests_tutorial: /opt/ros/melodic/lib/liburdf.so

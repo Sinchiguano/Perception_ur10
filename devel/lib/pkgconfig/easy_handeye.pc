@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: easy_handeye
+Description: Description of easy_handeye
+Version: 0.2.0
+Cflags: -I/home/casch/ws_moveit/devel/include
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: message_runtime geometry_msgs visp_hand2eye_calibration std_msgs geometry_msgs

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: rqt_easy_handeye
+Description: Description of rqt_easy_handeye
+Version: 0.2.0
+Cflags: 
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: 
