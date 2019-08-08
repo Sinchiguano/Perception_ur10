@@ -17,17 +17,14 @@
 #
 # Distributed under terms of the BSD license.
 #!/usr/bin/env python
+import sys
+sys.path.insert(0, '/home/casch/ws_moveit/src/perception_cvut/src/project')
+from ur10_class import *
 import roslib
 import rospy
 import math
 import tf
 import geometry_msgs.msg
-import sys
-sys.path.insert(0, '/home/casch/ws_moveit/src/perception_cvut/src/project')
-
-from thesis_class import *
-from thesis_class import camera
-
 
 def publish_transforms(tmp1,tmp2,tmp3,aux1,aux2,aux3,aux4):
 

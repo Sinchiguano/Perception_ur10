@@ -15,8 +15,7 @@ sys.path.insert(0, '/home/casch/ws_moveit/src/perception_cvut/src/project')
 from thesis_class import *
 from thesis_class import camera
 
-euler_angles_=[0,0,0]
-position_=[0.0,0.0,0.0]
+
 
 ##convert a rot and trans matrix to a 4x4 matrix
 def data_to_transform(r_matrix,t_position):
@@ -38,43 +37,19 @@ def transform_to_pose(mat):
     pose.orientation.w = quat[3]
     return pose
 
-def pose_camera_callback(msg):
-
-    global euler_angles_
-    global position_
-
-    position_=[msg.position.x,msg.position.y,msg.position.z]
-    quaternion_=msg.orientation
-    quaternion_tmp=[quaternion_.x,quaternion_.y,quaternion_.z,quaternion_.w]
-    roll_, pitch_, yaw_=tf.transformations.euler_from_quaternion(quaternion_tmp)
-    euler_angles_=[roll_,pitch_,yaw_]
-
 def publish_transforms(br,pose):
-
-    global euler_angles_
-    global position_
 
     t2 = geometry_msgs.msg.TransformStamped()
     t2.header.stamp = rospy.Time.now()
-    # t2.header.frame_id = "calibration_target"
-    # t2.child_frame_id = "camera_link"
     t2.header.frame_id = "camera_link"
     t2.child_frame_id = "calibration_target"
-    t2.transform.translation.x = 1.0*position_[0]
-    t2.transform.translation.y = 1.0*position_[1]
-    t2.transform.translation.z = 1.0*position_[2]
-    #orientation according to openCV
-    q3 = tf.transformations.quaternion_from_euler(euler_angles_[0],euler_angles_[1],euler_angles_[2])
-    #orientation of camera link. which is parallel to world frame
-    q2 = tf.transformations.quaternion_from_euler(-math.pi/2,math.pi/2,0)
-    #q2[3]=-1*q2[3]
-    #math.pi/2
-    #correction of camera frame according to openCV orientation
-    q4=1*quaternion_multiply(q3,q2)#rotation,origin
-    t2.transform.rotation.x = q3[0]
-    t2.transform.rotation.y = q3[1]
-    t2.transform.rotation.z = q3[2]
-    t2.transform.rotation.w = q3[3]
+    t2.transform.translation.x = pose.position.x
+    t2.transform.translation.y = pose.position.y
+    t2.transform.translation.z = pose.position.z
+    t2.transform.rotation.x = pose.orientation.x
+    t2.transform.rotation.y = pose.orientation.y
+    t2.transform.rotation.z = pose.orientation.z
+    t2.transform.rotation.w = pose.orientation.w
     br.sendTransform(t2)
 
 def print_information(rotation_vector,translation_vector,rvec_matrix):
@@ -143,16 +118,10 @@ def main():
 
     counter=0
     tmpNamec='temp2.jpg'
-
-    pub_pose = rospy.Publisher('pose_yumi_tcp_camera', Pose, queue_size=10)
-    sub_pose = rospy.Subscriber('/pose_yumi_tcp_camera', Pose, pose_camera_callback)
     br = tf2_ros.TransformBroadcaster()
 
     rate = rospy.Rate(10) # 10hz
 
-    import sys
-    print "This is the name of the script: ", sys.argv[0]
-    #flag=sys.argv[1]
 
     while not rospy.is_shutdown():
 
@@ -197,17 +166,15 @@ def main():
 
         # get transform matrix from rotation and translation of the camera frame relative to the world frame
         # previous setup
-        mat=data_to_transform(rvec_matrix.T,-np.dot(rvec_matrix.T, translation_vector))
+        #mat=data_to_transform(rvec_matrix.T,-np.dot(rvec_matrix.T, translation_vector))
         #different setup so that i do not need to get the inverse of the Transform
-        #mat=data_to_transform(rvec_matrix,np.dot(rvec_matrix, translation_vector))
+        mat=data_to_transform(rvec_matrix,np.dot(rvec_matrix, translation_vector))
 
 
         # get the pose of the camera frame relative to the world frame
         pose=transform_to_pose(mat)
+        #print(pose.position)
 
-        # publish pose of the camera frame
-        pub_pose.publish(pose)
-        print('pose',pose)
         # publish transform for the following coordinate frames: target, camera and world
         publish_transforms(br,pose)
 
