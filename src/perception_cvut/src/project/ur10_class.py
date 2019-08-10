@@ -108,7 +108,7 @@ class UniversalRobot(object):
     # print ""
 
     # set the maximum velocity of the joint values
-    move_group.set_max_velocity_scaling_factor(0.25)
+    move_group.set_max_velocity_scaling_factor(0.075)
 
     minX=0.10
     minY=0.10

@@ -32,12 +32,11 @@ def publish_transforms(tmp1,tmp2,tmp3,aux1,aux2,aux3,aux4):
 
     t10 = geometry_msgs.msg.TransformStamped()
     t10.header.stamp = rospy.Time.now()
-    t10.header.frame_id = "TCP"
-    t10.child_frame_id = "camera_link"
-    t10.transform.translation.x = 0.05
-    t10.transform.translation.y = 0.10
-    t10.transform.translation.z = 0.20
-
+    t10.header.frame_id = "camera_link"
+    t10.child_frame_id = "calibration_target1"
+    t10.transform.translation.x = tmp1
+    t10.transform.translation.y = tmp2
+    t10.transform.translation.z = tmp3
     t10.transform.rotation.x = aux1
     t10.transform.rotation.y = aux2
     t10.transform.rotation.z = aux3
@@ -56,38 +55,38 @@ if __name__ == '__main__':
     rotation_mean=list()
     while not rospy.is_shutdown():
         try:
-            (trans1,rot1) = listener.lookupTransform('/calibration_target','/camera_link', rospy.Time(0))
-            if not trans1==None and not rot1==None:
-                translation_mean.append(trans1)
-                rotation_mean.append(rot1)
-                counter+=1
+            (trans1,rot1) = listener.lookupTransform('/camera_link','/calibration_target', rospy.Time(0))
+
 
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
-        tmp=np.mean(translation_mean,axis=0)
-        aux=np.mean(rotation_mean,axis=0)
+
         print('------------------------------------')
-        print('Translation mean : \n{}'.format(tmp))
-        print()
-        print('Rotation mean : \n{}'.format(aux))
-        print()
-        print('Current values')
-        print(trans1)
-        print(rot1)
+        print('Translation mean : \n{}'.format(trans1))
+        print('Rotation mean : \n{}'.format(rot1))
 
-        # Correction of my transform in order to have in openCV convention
-        q_corre = tf.transformations.quaternion_from_euler(math.pi/2,-math.pi/2,0)
-        #inverse of the quaternion
-        q_corre[3]=-q_corre[3]
-        q_camera = Quaternion(aux[0],aux[1],aux[2],aux[3])
-        q2=quaternion_multiply(q_camera,q_corre)
-        print('Quaternion in openCV Convention: \n {}'.format(q2))
-        Rq = quaternion_matrix(q2)
-        print('Rotation in openCV Convention: \n {}'.format(Rq))
 
-        print('-----------------------------------')
+        # # Correction of my transform in order to have in openCV convention
+        # q_corre = tf.transformations.quaternion_from_euler(math.pi/2,-math.pi/2,0)
+        # #inverse of the quaternion
+        # q_corre[3]=-q_corre[3]
+        # q_camera = Quaternion(aux[0],aux[1],aux[2],aux[3])
+        # q2=quaternion_multiply(q_camera,q_corre)
+        # print('Quaternion in openCV Convention: \n {}'.format(q2))
+        # Rq = quaternion_matrix(q2)
+        # print('Rotation in openCV Convention: \n {}'.format(Rq))
+
 
 
         #print(tmp[0],tmp[1],tmp[2])
-        publish_transforms(tmp[0],tmp[1],tmp[2],aux[0],aux[1],aux[2],aux[3])
+        publish_transforms(trans1[0],trans1[1],trans1[2],rot1[0],rot1[1],rot1[2],rot1[3])
         rate.sleep()
+
+
+
+# if not trans1==None and not rot1==None:
+#     translation_mean.append(trans1)
+#     rotation_mean.append(rot1)
+#     counter+=1
+# tmp=np.mean(translation_mean,axis=0)
+# aux=np.mean(rotation_mean,axis=0)

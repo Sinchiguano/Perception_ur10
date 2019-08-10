@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/install
+
+Name: aruco_msgs
+Description: Description of aruco_msgs
+Version: 0.2.3
+Cflags: -I/home/casch/ws_moveit/install/include
+Libs: -L/home/casch/ws_moveit/install/lib 
+Requires: message_runtime geometry_msgs std_msgs

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: image_publisher
+Description: Description of image_publisher
+Version: 1.13.0
+Cflags: -I/home/casch/ws_moveit/devel/include
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: 

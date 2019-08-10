@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: aruco
+Description: Description of aruco
+Version: 0.2.3
+Cflags: -I/home/casch/ws_moveit/src/aruco_ros/aruco/include
+Libs: -L/home/casch/ws_moveit/devel/lib -laruco
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: aruco_ros
+Description: Description of aruco_ros
+Version: 0.2.3
+Cflags: -I/home/casch/ws_moveit/devel/include -I/home/casch/ws_moveit/src/aruco_ros/aruco_ros/include
+Libs: -L/home/casch/ws_moveit/devel/lib -laruco_ros_utils
+Requires: aruco sensor_msgs tf

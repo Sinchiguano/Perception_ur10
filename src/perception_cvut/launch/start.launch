@@ -13,5 +13,13 @@
   <include file="$(find ur10_moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
   </include>
+  
+  <!-- realsense camera launch file -->
+  <!--  
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="filters" value="pointcloud"/>
+  </include>  -->  
+
 
 </launch>
+
