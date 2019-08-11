@@ -40,12 +40,13 @@ def print_information(rvec,tvec,rmatrix):
     print(-np.dot(rmatrix.T, tvec.reshape(3,1)))
     print('\n\n-----------------------------------------------------')
 
-def publish_transforms(br,mat,R,t):
+def publish_transforms(br,mat,t,ids):
 
     t2 = geometry_msgs.msg.TransformStamped()
     t2.header.stamp = rospy.Time.now()
-    t2.header.frame_id = "aruco_link"
-    t2.child_frame_id = "camera_link"
+    t2.header.frame_id = "camera_link"
+    t2.header.frame_id = "camera_rgb_optical_frame"
+    t2.child_frame_id = "aruco_link"+ids
     t2.transform.translation.x = 1.0*t[0]
     t2.transform.translation.y = 1.0*t[1]
     t2.transform.translation.z = 1.0*t[2]
@@ -90,8 +91,9 @@ def main():
 
         #Post processing for aruco detector
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
+        aruco_dict = aruco.Dictionary_get(aruco.DICT_5X5_250)
         parameters =  aruco.DetectorParameters_create()
+
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
         frame_markers = aruco.drawDetectedMarkers(frame.copy(), corners, ids)
         # font for displaying text (below)
@@ -102,9 +104,9 @@ def main():
             # if no check is added the code will crash
             if np.all(ids != None):
                 # estimate pose of each marker and return the values rvet and tvec-different from camera coefficients
-                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.027, cameraMatrix_ar,distCoef_ar)
+                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.09, cameraMatrix_ar,distCoef_ar)
                 #(rvec-tvec).any() # get rid of that nasty numpy value array error
-                print('----------------------')
+                print('----------------------')#0.09 is the length of the side of the marker
                 #print('rvec \n{}'.format(rvec))
                 print('tvec \n{}'.format(tvec))
                 print('----------------------')
@@ -128,10 +130,11 @@ def main():
                 print_information(rvec,tvec,rmatrix)
 
                 # get transform matrix from rotation and translation of the camera frame relative to the world frame
-                mat=data_to_transform(rmatrix.T,-np.dot(rmatrix.T, tvec.reshape(3,1)))
-
+                # mat=data_to_transform(rmatrix.T,-np.dot(rmatrix.T, tvec.reshape(3,1)))
+                mat=data_to_transform(rmatrix,tvec.reshape(3,1))
                 # publish transform for the following coordinate frames: target, camera and world
-                publish_transforms(br,mat,rmatrix.T,-np.dot(rmatrix.T, tvec.reshape(3,1)))
+                publish_transforms(br,mat,tvec.reshape(3,1),str(ids))
+                rate.sleep()
 
         except Exception as ex:
             print('Please, point into the aruco markers!!!')
