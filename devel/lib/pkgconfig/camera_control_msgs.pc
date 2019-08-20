@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: camera_control_msgs
+Description: Description of camera_control_msgs
+Version: 0.2.1
+Cflags: -I/home/casch/ws_moveit/devel/include
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: actionlib_msgs sensor_msgs message_runtime

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/install
+
+Name: smobex_bringup
+Description: Description of smobex_bringup
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/casch/ws_moveit/install/lib 
+Requires: 

@@ -42,11 +42,31 @@ def print_information(rvec,tvec,rmatrix):
 
 def publish_transforms(br,mat,t,ids):
 
+    # #good for poing cloud
+    # t1 = geometry_msgs.msg.TransformStamped()
+    # t1.header.stamp = rospy.Time.now()
+    # t1.header.frame_id = "camera_link_trick"
+    # t1.child_frame_id = "camera_link"
+    # t1.transform.translation.x = 0.0
+    # t1.transform.translation.y = 0.0
+    # t1.transform.translation.z = 0.0
+    # q1 = tf.transformations.quaternion_from_euler(0,-math.pi/2,0)
+    # #q1 = tf.transformations.quaternion_from_euler(0,0,0)
+    # t1.transform.rotation.x = q1[0]
+    # t1.transform.rotation.y = q1[1]
+    # t1.transform.rotation.z = q1[2]
+    # t1.transform.rotation.w = q1[3]
+    # br.sendTransform(t1)
+
+
+
     t2 = geometry_msgs.msg.TransformStamped()
     t2.header.stamp = rospy.Time.now()
     t2.header.frame_id = "camera_link"
-    t2.header.frame_id = "camera_rgb_optical_frame"
-    t2.child_frame_id = "aruco_link"+ids
+    #t2.header.frame_id = "camera_rgb_optical_frame"
+    #t2.header.frame_id = "camera_color_optical_frame"
+    #t2.child_frame_id = "aruco_link"+ids
+    t2.child_frame_id = "marker_frame"
     t2.transform.translation.x = 1.0*t[0]
     t2.transform.translation.y = 1.0*t[1]
     t2.transform.translation.z = 1.0*t[2]
@@ -91,7 +111,7 @@ def main():
 
         #Post processing for aruco detector
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        aruco_dict = aruco.Dictionary_get(aruco.DICT_5X5_250)
+        aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
         parameters =  aruco.DetectorParameters_create()
 
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
@@ -104,7 +124,7 @@ def main():
             # if no check is added the code will crash
             if np.all(ids != None):
                 # estimate pose of each marker and return the values rvet and tvec-different from camera coefficients
-                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.09, cameraMatrix_ar,distCoef_ar)
+                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.027, cameraMatrix_ar,distCoef_ar)
                 #(rvec-tvec).any() # get rid of that nasty numpy value array error
                 print('----------------------')#0.09 is the length of the side of the marker
                 #print('rvec \n{}'.format(rvec))

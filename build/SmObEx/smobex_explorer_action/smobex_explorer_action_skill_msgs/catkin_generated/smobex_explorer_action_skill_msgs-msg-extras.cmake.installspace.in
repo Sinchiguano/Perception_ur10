@@ -1,0 +1,2 @@
+set(smobex_explorer_action_skill_msgs_MESSAGE_FILES "msg/SmobexExplorerActionSkillAction.msg;msg/SmobexExplorerActionSkillActionGoal.msg;msg/SmobexExplorerActionSkillActionResult.msg;msg/SmobexExplorerActionSkillActionFeedback.msg;msg/SmobexExplorerActionSkillGoal.msg;msg/SmobexExplorerActionSkillResult.msg;msg/SmobexExplorerActionSkillFeedback.msg")
+set(smobex_explorer_action_skill_msgs_SERVICE_FILES "")

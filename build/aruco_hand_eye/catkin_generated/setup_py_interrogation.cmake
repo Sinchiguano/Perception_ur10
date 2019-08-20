@@ -1,0 +1,6 @@
+set(aruco_hand_eye_SETUP_PY_VERSION "0.1.0")
+set(aruco_hand_eye_SETUP_PY_SCRIPTS "")
+set(aruco_hand_eye_SETUP_PY_PACKAGES "aruco_hand_eye")
+set(aruco_hand_eye_SETUP_PY_PACKAGE_DIRS "src/aruco_hand_eye")
+set(aruco_hand_eye_SETUP_PY_MODULES "")
+set(aruco_hand_eye_SETUP_PY_MODULE_DIRS "")

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/casch/ws_moveit/src/pylon_camera/src/pylon_camera/write_device_user_id_to_camera.cpp
+pylon/PylonIncludes.h
+-
+algorithm
+-
+unistd.h
+-
+string
+-
+

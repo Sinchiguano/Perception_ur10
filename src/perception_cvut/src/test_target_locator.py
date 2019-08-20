@@ -119,9 +119,9 @@ def publish_transforms(br):
     # t1.child_frame_id = "camera_link"
     # t1.transform.translation.x = 0.0
     # t1.transform.translation.y = 0.0
-    # t1.transform.translation.z = 0.20
-    # q1 = tf.transformations.quaternion_from_euler(0,-math.pi/2,0)
-    # #q1 = tf.transformations.quaternion_from_euler(0,0,0)
+    # t1.transform.translation.z = 0.0
+    # #q1 = tf.transformations.quaternion_from_euler(0,-math.pi/2,0)
+    # q1 = tf.transformations.quaternion_from_euler(0,0,0)
     # t1.transform.rotation.x = q1[0]
     # t1.transform.rotation.y = q1[1]
     # t1.transform.rotation.z = q1[2]
@@ -132,19 +132,29 @@ def publish_transforms(br):
     #I do not need any correction as long as i can make sure that the camera link is in correct.
     t2 = geometry_msgs.msg.TransformStamped()
     t2.header.stamp = rospy.Time.now()
-    t2.header.frame_id = "camera_color_optical_frame"
-    #t2.header.frame_id = "camera_link"
-    t2.child_frame_id = "calibration_target"
+    t2.header.frame_id = "camera_link"
+    #t2.header.frame_id = "marker_frame"
+    #t2.child_frame_id = "camera_link"
+    t2.child_frame_id = "marker_frame"
     t2.transform.translation.x = 1.0*position_[0]
     t2.transform.translation.y = 1.0*position_[1]
     t2.transform.translation.z = 1.0*position_[2]
     #orientation according to openCV
     q3 = tf.transformations.quaternion_from_euler(euler_angles_[0],euler_angles_[1],euler_angles_[2])
-    t2.transform.rotation.x = q3[0]
-    t2.transform.rotation.y = q3[1]
-    t2.transform.rotation.z = q3[2]
-    t2.transform.rotation.w = q3[3]
+    #orientation of camera link. which is parallel to world frame
+    q2 = tf.transformations.quaternion_from_euler(0,0,math.pi)
+    #correction of camera frame according to openCV orientation
+    q4=quaternion_multiply(q3,q2)#rotation,origin
+    t2.transform.rotation.x = q4[0]
+    t2.transform.rotation.y = q4[1]
+    t2.transform.rotation.z = q4[2]
+    t2.transform.rotation.w = q4[3]
     br.sendTransform(t2)
+    # t2.transform.rotation.x = q3[0]
+    # t2.transform.rotation.y = q3[1]
+    # t2.transform.rotation.z = q3[2]
+    # t2.transform.rotation.w = q3[3]
+    # br.sendTransform(t2)
 
 def print_information(rotation_vector,translation_vector,rvec_matrix):
 
@@ -269,10 +279,10 @@ def main():
         draw_show_on_image(frame,axis_imgpts,corners,ret)
 
         # get transform matrix from rotation and translation of the camera frame relative to the world frame
-        #mat=data_to_transform(rvec_matrix.T,-np.dot(rvec_matrix.T, translation_vector))
+        mat=data_to_transform(rvec_matrix.T,-np.dot(rvec_matrix.T, translation_vector))
 
         # get transform matrix from rotation and translation of the camera frame relative to the world frame
-        mat=data_to_transform(rvec_matrix,translation_vector)
+        #mat=data_to_transform(rvec_matrix,translation_vector)
 
         # get the pose of the camera frame relative to the world frame
         pose=transform_to_pose(mat)

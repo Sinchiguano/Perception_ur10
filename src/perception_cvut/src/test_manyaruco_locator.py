@@ -102,7 +102,7 @@ def main():
             # if no check is added the code will crash
             if np.all(ids != None):
                 # estimate pose of each marker and return the values rvet and tvec-different from camera coefficients
-                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.027, cameraMatrix_ar,distCoef_ar)
+                rvec, tvec ,_ = aruco.estimatePoseSingleMarkers(corners, 0.055, cameraMatrix_ar,distCoef_ar)
                 #(rvec-tvec).any() # get rid of that nasty numpy value array error
                 print('----------------------')
                 #print('rvec \n{}'.format(rvec))

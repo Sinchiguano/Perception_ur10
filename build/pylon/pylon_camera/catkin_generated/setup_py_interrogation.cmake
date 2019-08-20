@@ -1,0 +1,6 @@
+set(pylon_camera_SETUP_PY_VERSION "0.12.0")
+set(pylon_camera_SETUP_PY_SCRIPTS "")
+set(pylon_camera_SETUP_PY_PACKAGES "")
+set(pylon_camera_SETUP_PY_PACKAGE_DIRS "")
+set(pylon_camera_SETUP_PY_MODULES "")
+set(pylon_camera_SETUP_PY_MODULE_DIRS "")

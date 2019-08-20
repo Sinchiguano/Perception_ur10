@@ -21,13 +21,15 @@ import csv
 
 name_file='pose_ur10.csv'
 
-def do_csv_file(position,orientation):
+def do_csv_file(position,orientation,joints_values):
     global name_file
     x_,y_,z_=position.x,position.y,position.z
     x,y,z,w=orientation.x,orientation.y,orientation.z,orientation.w
     with open(name_file, 'a') as csvfile:# a means append
         filewriter = csv.writer(csvfile, delimiter=',',quotechar=' ', quoting=csv.QUOTE_MINIMAL)
-        filewriter.writerow([['position:'],[x_,y_,z_]]+[['orientation:'],[x,y,z,w]])
+        #filewriter.writerow([[x_,y_,z_]]+[[x,y,z,w]]+joints_values)
+        filewriter.writerow(joints_values)
+
 def main():
     r=rospy.Rate(10)
 
@@ -39,12 +41,14 @@ def main():
             continue
         try:
             pose_TCP=object_ur10.move_group.get_current_pose().pose
+            joints_values=object_ur10.move_group.get_current_joint_values()
             print('pose_TCP.position: \n{}'.format(pose_TCP.position))
             print('pose_TCP.orientation: \n {}'.format(pose_TCP.orientation))
+            print ("robot joint values: \n {}".format(joints_values))
             command=cv2.waitKey(1) & 0xFF
             if command == ord('t'):
                 print('The current pose was appended:\n{}'.format(pose_TCP))
-                do_csv_file(pose_TCP.position,pose_TCP.orientation)
+                do_csv_file(pose_TCP.position,pose_TCP.orientation,[joints_values])
                 time.sleep(2)
             print "============ Python movement complete!"
             r.sleep()

@@ -108,7 +108,7 @@ class UniversalRobot(object):
     # print ""
 
     # set the maximum velocity of the joint values
-    move_group.set_max_velocity_scaling_factor(0.075)
+    move_group.set_max_velocity_scaling_factor(0.055)
 
     minX=0.10
     minY=0.10
@@ -135,7 +135,7 @@ class UniversalRobot(object):
     self.eef_link = eef_link
     self.group_names = group_names
 
-  def go_to_joint_state(self):
+  def go_to_joint_state(self,tmp_joints):
 
     # In practice, you should use the class variables directly unless you have a good
     # reason not to.
@@ -143,8 +143,8 @@ class UniversalRobot(object):
 
     ## Planning to a Joint Goal
     #Home Position
-    joint_goal=[0.543819785118103, -1.6310613791095179, 1.0388636589050293, -0.7879875341998499, 1.6518089771270752, 0.043724071234464645]
-
+    #joint_goal=[0.543819785118103, -1.6310613791095179, 1.0388636589050293, -0.7879875341998499, 1.6518089771270752, 0.043724071234464645]
+    joint_goal=tmp_joints
 
     #plan to the new joint space goal and visualize the plan
     move_group.set_joint_value_target(joint_goal)
@@ -416,42 +416,65 @@ goal_3 = geometry_msgs.msg.Pose()
 goal_4 = geometry_msgs.msg.Pose()
 goal_5 = geometry_msgs.msg.Pose()
 goal_6 = geometry_msgs.msg.Pose()
-
+goal_7 = geometry_msgs.msg.Pose()
+goal_8 = geometry_msgs.msg.Pose()
+goal_9 = geometry_msgs.msg.Pose()
 
 
 home = goal_0
-home.position.x,home.position.y,home.position.z=[0.615913613984735,  0.07210064263944486,  0.621327238895192]
-home.orientation.x,home.orientation.y,home.orientation.z,home.orientation.w=[0.8367270065269945,  0.5475591046852049,  0.0020334764183821763,  0.007925174973952662]
+home.position.x,home.position.y,home.position.z= [0.6044897497971731,  0.2611879818362852,  0.5973805032611594]
+home.orientation.x,home.orientation.y,home.orientation.z,home.orientation.w=[0.7136097533836827,  0.7002567082360588,  0.01392144931313463,  0.014417201361588824]
 
 
-goal_1.position.x,goal_1.position.y,goal_1.position.z=[0.5431634459144228,  0.3460516614635293,  0.6174751967102612]
-goal_1.orientation.x,goal_1.orientation.y,goal_1.orientation.z,goal_1.orientation.w=[0.8367017529807473,  0.5475980995961437,  0.0021940696979265303,  0.00785391213325322]
+goal_1.position.x,goal_1.position.y,goal_1.position.z= [0.6792170687038906,  0.2595806102601011,  0.6004240152169116]
+goal_1.orientation.x,goal_1.orientation.y,goal_1.orientation.z,goal_1.orientation.w= [0.7137240438370314,  0.7001395499445111,  0.013934957389277303,  0.014436648328879434]
 
 
-goal_2.position.x,goal_2.position.y,goal_2.position.z=[0.6777887837408033,  0.28724752649592133,  0.6197333476680801]
-goal_2.orientation.x,goal_2.orientation.y,goal_2.orientation.z,goal_2.orientation.w=[0.8366770329505939,  0.5476363676414185,  0.0021869381929580677,  0.007821040266094063]
+goal_2.position.x,goal_2.position.y,goal_2.position.z=[0.7300653931760371,  0.258636102036575,  0.6024867866803]
+goal_2.orientation.x,goal_2.orientation.y,goal_2.orientation.z,goal_2.orientation.w=[0.7136432029536898,  0.7002228892704451,  0.013914804386057023,  0.014410497515580047]
 
 
 goal_3.position.x,goal_3.position.y,goal_3.position.z= [0.7035537422125395,  0.15545948941081,  0.6214753637348197]
 goal_3.orientation.x,goal_3.orientation.y,goal_3.orientation.z,goal_3.orientation.w=[0.7928890857866161,  0.6093131455713582,  0.0018206948021379473,  0.007814943687480098]
 
-# goal_4.position.x,goal_4.position.y,goal_4.position.z=[0.5790982810443824,  0.2805584983724089,  0.6288600393880597]
-# goal_4.orientation.x,goal_4.orientation.y,goal_4.orientation.z,goal_4.orientation.w=[0.7164356517168392,  0.6970396839083701,  0.0203875345583521,  0.02097580607793485]
+goal_4.position.x,goal_4.position.y,goal_4.position.z=[0.7288303826582216,  0.18682625560701704,  0.6025412818627581]
+goal_4.orientation.x,goal_4.orientation.y,goal_4.orientation.z,goal_4.orientation.w=[0.71375435762414,  0.7001099601135318,  0.013979280196329043,  0.014329705076260793]
+
+goal_5.position.x,goal_5.position.y,goal_5.position.z=[0.6767072279760193,  0.18782601094693227,  0.6003188598945391]
+goal_5.orientation.x,goal_5.orientation.y,goal_5.orientation.z,goal_5.orientation.w= [0.7137013273247063,  0.7001685843065901,  0.013873822129271239,  0.014208658789036311]
+
+
+goal_6.position.x,goal_6.position.y,goal_6.position.z=[0.6755934847070446,  0.1308157557420405,  0.6003676886876154]
+goal_6.orientation.x,goal_6.orientation.y,goal_6.orientation.z,goal_6.orientation.w= [0.7137591297052486,  0.7001061742770575,  0.0139653493400223,  0.014290504517334367]
+
+goal_7.position.x,goal_7.position.y,goal_7.position.z= [0.6207439707612881,  0.13164862449093792,  0.598265138984852]
+goal_7.orientation.x,goal_7.orientation.y,goal_7.orientation.z,goal_7.orientation.w= [0.71375108394431,  0.7001134267654829,  0.013977021486629444,  0.014325596021725277]
+
+goal_8.position.x,goal_8.position.y,goal_8.position.z=  [0.5568401162361492,  0.13293034872029502,  0.5956477647060543]
+goal_8.orientation.x,goal_8.orientation.y,goal_8.orientation.z,goal_8.orientation.w= [0.7137194188717318,  0.7001472443196016,  0.013946052695757967,  0.014280581615348802]
+
+
+goal_9.position.x,goal_9.position.y,goal_9.position.z=   [0.5576243412091563,  0.17938184053692052,  0.5957389333994288]
+goal_9.orientation.x,goal_9.orientation.y,goal_9.orientation.z,goal_9.orientation.w= [0.7137293998692598,  0.7001305777887191,  0.014088824004738721,  0.014457622407030768]
+
+ #
+ # [0.5596032395533639,  0.17951778107449512,  0.547334999841373] , [0.7138390003183882,  0.7000262396424347,  0.013917989699316414,  0.014263064160495918] ,
+ # [0.558636642043086,  0.12815751202391815,  0.5473440386349699] , [0.7137668237534147,  0.7001035603118735,  0.01383991265271107,  0.014155669018664514] ,
+ # [0.63573502480096,  0.12657429800348158,  0.5505507145574629] , [0.7138485154677052,  0.7000121070806384,  0.014011723999118472,  0.014388137323882704] ,
+
 
 poses.append(home)
 poses.append(goal_1)
 poses.append(goal_2)
 poses.append(goal_3)
-#poses.append(goal_4)
+poses.append(goal_4)
+poses.append(goal_5)
+poses.append(goal_6)
+poses.append(goal_7)
+poses.append(goal_8)
+poses.append(goal_9)
 
 
-# goal_5.position.x,goal_5.position.y,goal_5.position.z=[0.6417158998054968,  0.014154900775432716,  0.6320462367429978]
-# goal_5.orientation.x,goal_5.orientation.y,goal_5.orientation.z,goal_5.orientation.w= [0.7192697008221377,  0.6893961430164041,  0.05879839572913152,  0.06266421732550821]
-# poses.append(goal_5)
-#
-# goal_6.position.x,goal_6.position.y,goal_6.position.z=[0.6674803539261742,  0.012621903092877501,  0.4834825855314617]
-# goal_6.orientation.x,goal_6.orientation.y,goal_6.orientation.z,goal_6.orientation.w= [0.7192509645358769,  0.6894194283159346,  0.05879273161768367,  0.06262840077530146]
-# poses.append(goal_6)
 
 import sys, time
 # numpy and scipy
@@ -497,8 +520,11 @@ class camera(object):
         rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
         rospy.Subscriber('/camera/aligned_depth_to_color/image_raw', Image, self.callback_depth)
         rospy.Subscriber('/camera/depth/color/points', PointCloud2, self.callback_pointCloud)
-        #rospy.Subscriber('/camera/color/camera_info', CameraInfo,self.infoColorCallback)
-        #rospy.Subscriber('/camera/depth/image_rect_raw', CameraInfo, self.callback_depth)
+        # rospy.Subscriber('/camera/color/camera_info', CameraInfo,self.infoColorCallback)
+        # rospy.Subscriber('/camera/depth/image_rect_raw', CameraInfo, self.callback_depth)
+
+        rospy.Subscriber('/pylon_camera_node/image_raw', Image, self.callback_rgb)
+        rospy.Subscriber('/pylon_camera_node/camera_info', Image, self.callback_depth)
 
         self.cv_image1=None
         self.cv_image2=None

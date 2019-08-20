@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/devel
+
+Name: smobex_explorer_action_skill_msgs
+Description: Description of smobex_explorer_action_skill_msgs
+Version: 0.0.0
+Cflags: -I/home/casch/ws_moveit/devel/include
+Libs: -L/home/casch/ws_moveit/devel/lib 
+Requires: actionlib_msgs std_msgs

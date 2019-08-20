@@ -50,19 +50,23 @@ class camera(object):
     def __init__(self):
         # In ROS, nodes are uniquely named.
         rospy.init_node('camera', anonymous=True)
-        # #Real sense camera
+        #Real sense camera
         rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
         rospy.Subscriber('/camera/aligned_depth_to_color/image_raw', Image, self.callback_depth)
         rospy.Subscriber('/camera/depth/color/points', PointCloud2, self.callback_pointCloud)
         # rospy.Subscriber('/camera/color/camera_info', CameraInfo,self.infoColorCallback)
         # rospy.Subscriber('/camera/depth/image_rect_raw', CameraInfo, self.callback_depth)
 
-        # #Real astra camera
-        rospy.Subscriber('/camera/rgb/image_raw', Image, self.callback_rgb)
-        rospy.Subscriber('/camera/depth/image_raw', Image, self.callback_depth)
-        rospy.Subscriber('/camera/depth/points', PointCloud2, self.callback_pointCloud)
-        # rospy.Subscriber('/camera/rgb/camera_info', CameraInfo,self.infoColorCallback)
-        # rospy.Subscriber('/camera/depth/camera_info', CameraInfo, self.callback_depth)
+        # rospy.Subscriber('/pylon_camera_node/image_raw', Image, self.callback_rgb)
+        # #rospy.Subscriber('/pylon_camera_node/camera_info', Image, self.callback_depth)
+
+
+        # # #Real astra camera
+        # rospy.Subscriber('/camera/rgb/image_raw', Image, self.callback_rgb)
+        # rospy.Subscriber('/camera/depth/image_raw', Image, self.callback_depth)
+        # rospy.Subscriber('/camera/depth/points', PointCloud2, self.callback_pointCloud)
+        # # rospy.Subscriber('/camera/rgb/camera_info', CameraInfo,self.infoColorCallback)
+        # # rospy.Subscriber('/camera/depth/camera_info', CameraInfo, self.callback_depth)
 
 
         self.cv_image1=None
