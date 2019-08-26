@@ -3,7 +3,7 @@
     <arg name="namespace_prefix" default="my_eih_calib" />
     <!-- start ArUco --> 
     <arg name="markerId" default="26"/>
-    <arg name="markerSize" default="0.10"/> <!-- in meter -->
+    <arg name="markerSize" default="0.12"/> <!-- in meter -->
     <param name="ref_frame" value="camera_link"/>
 
     <node pkg="aruco_ros" type="single" name="aruco_single">

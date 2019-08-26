@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/install
+
+Name: ur_driver
+Description: Description of ur_driver
+Version: 1.2.5
+Cflags: -I/home/casch/ws_moveit/install/include
+Libs: -L/home/casch/ws_moveit/install/lib 
+Requires: dynamic_reconfigure

@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/install
+
+Name: aruco_hand_eye
+Description: Description of aruco_hand_eye
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/casch/ws_moveit/install/lib 
+Requires: 

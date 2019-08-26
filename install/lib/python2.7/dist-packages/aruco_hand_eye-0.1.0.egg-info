@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: aruco_hand_eye
+Version: 0.1.0
+Summary: This package uses aruco_ros and vis_hand2eye_calibration to determine the
+    extrinisc parameters of cameras.
+Home-page: UNKNOWN
+Author: Jonathan Bohren
+Author-email: jbo@jhu.edu
+License: BSD
+Description: UNKNOWN
+Platform: UNKNOWN

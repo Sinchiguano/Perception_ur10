@@ -1,0 +1,70 @@
+#eye-on-hand calibration with easy-hand calibration
+#################################################
+[INFO] [1566400161.516415]: Computed calibration: effector_camera: 
+  translation: 
+    x: 0.0339651415724
+    y: 0.0552085695086
+    z: 0.15075812689
+  rotation: 
+    x: -0.40857476165
+    y: -0.433814743122
+    z: -0.59173844918
+    w: 0.542878476783
+
+
+# good calibration, it means that we have not to take samples close to the aruco marker, and few of them also.
+#####################################
+[INFO] [1566401047.967612]: Computed calibration: effector_camera: 
+  translation: 
+    x: 0.0375795070533
+    y: 0.0695988202604
+    z: 0.21626123945
+  rotation: 
+    x: -0.402805787911
+    y: -0.431190055042
+    z: -0.59135683267
+    w: 0.549654191391
+
+
+#Aruco/visp hand-eye calibration
+#############################################
+[INFO] [1566403629.886294]: Computing from 15 poses...
+[INFO] [1566403629.914384]: Result:
+effector_camera: 
+  translation: 
+    x: 0.0497254221324
+    y: 0.0704615770174
+    z: 0.210094139812
+  rotation: 
+    x: -0.0348300579069
+    y: -0.15213834198
+    z: 0.987734947519
+    w: 0.00452387180389
+
+#Sunday_aruco and easy-hand-calibration
+#################################################
+[INFO] [1566756679.772401]: Computing from 13 poses...
+[INFO] [1566756679.806836]: Computed calibration: effector_camera: 
+  translation: 
+    x: -0.0110339163408
+    y: 0.0414220533315
+    z: 0.216400516081
+  rotation: 
+    x: 0.670770290787
+    y: -0.00722904128958
+    z: 0.740955767116
+    w: 0.0316150144227
+
+#Monday --> easy-hand-calibration
+translation: 
+  x: -0.0288128759998
+  y: 0.067767329575
+  z: 0.208760347606
+rotation: 
+  x: -0.465414772906
+  y: -0.431599691503
+  z: -0.569304515375
+  w: 0.522497047101
+
+  rosrun tf static_transform_publisher -0.0288128759998 0.067767329575 0.208760347606 -0.465414772906 -0.431599691503 -0.569304515375 0.522497047101 /wrist_3_link /camera_link 100
+

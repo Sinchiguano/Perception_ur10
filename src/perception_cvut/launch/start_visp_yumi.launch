@@ -1,0 +1,29 @@
+<launch>
+
+  <!-- realsense camera launch file... -->
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="filters" value="pointcloud"/>
+  </include>
+
+  <include file="$(find aruco_hand_eye)/launch/aruco_hand_eye_cesar.launch">
+    <arg name="markerid"   value="26"/>
+    <arg name="markersize" value="0.08"/>
+    <arg name="publish_tf" value="true"/>
+
+    <arg name="marker_parent_frame" value="/ee_link"/>
+    <arg name="camera_parent_frame" value="/base_link" />
+
+    <arg name="camera" value="/camera"/>
+    <arg name="camera_frame" value="/camera_color_optical_frame"/>
+  </include>
+  
+
+
+  <!-- By: Casch -->
+</launch>
+
+
+
+  <!--   <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+      <remap from="image" to="/aruco_single/result" />
+  </node>-->

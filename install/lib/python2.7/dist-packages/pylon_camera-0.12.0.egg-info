@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: pylon_camera
+Version: 0.12.0
+Summary: Proprietary Package for Basler Cameras using the the Pylon API.
+  	- Supports DART, USB3 and GigE cameras.
+  	- Setting Gain, Gamma, Exposure, Binning and Brightness using Services.
+Home-page: http://www.ros.org/wiki/pylon_camera
+Author: Markus Grimm <grimm@magazino.eu>, Nikolas Engelhard <engelhard@magazino.eu>
+Author-email: UNKNOWN
+License: BSD
+Description: UNKNOWN
+Platform: UNKNOWN

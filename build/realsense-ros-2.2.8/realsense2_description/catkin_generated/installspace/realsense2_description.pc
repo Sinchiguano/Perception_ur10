@@ -1,0 +1,8 @@
+prefix=/home/casch/ws_moveit/install
+
+Name: realsense2_description
+Description: Description of realsense2_description
+Version: 2.2.8
+Cflags: 
+Libs: -L/home/casch/ws_moveit/install/lib 
+Requires: 

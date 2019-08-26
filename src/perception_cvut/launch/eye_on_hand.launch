@@ -12,7 +12,7 @@
         <arg name="tracking_marker_frame" value="/marker_frame"/>
 
         <arg name="robot_base_frame" value="/base_link" />
-        <arg name="robot_effector_frame" value="/ee_link" />
+        <arg name="robot_effector_frame" value="/wrist_3_link" />
     </include>
 
     <!-- We used the realsense, and finally found that the camera 

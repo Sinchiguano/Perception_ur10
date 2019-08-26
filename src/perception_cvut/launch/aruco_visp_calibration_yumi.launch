@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find aruco_hand_eye)/launch/aruco_hand_eye_cesar.launch">
+    <arg name="markerid"   value="26"/>
+    <arg name="markersize" value="0.08"/>
+    <arg name="publish_tf" value="true"/>
+
+    <arg name="marker_parent_frame" value="/ee_link"/>
+    <arg name="camera_parent_frame" value="/base_link" />
+
+    <arg name="camera" value="/camera"/>
+    <arg name="camera_frame" value="/camera_color_optical_frame"/>
+  </include>
+</launch>

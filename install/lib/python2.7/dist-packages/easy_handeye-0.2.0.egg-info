@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: easy_handeye
+Version: 0.2.0
+Summary: This package uses visp_hand2eye_calibration to determine the
+        extrinsic parameters of cameras.
+Home-page: UNKNOWN
+Author: Marco Esposito
+Author-email: marco.esposito@tum.de
+License: LGPLv3
+Description: UNKNOWN
+Platform: UNKNOWN

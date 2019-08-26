@@ -116,7 +116,7 @@ realsense2_camera_EXTERNAL_OBJECTS =
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: realsense/realsense-2.2.0/realsense2_camera/CMakeFiles/realsense2_camera.dir/src/realsense_node_factory.cpp.o
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: realsense/realsense-2.2.0/realsense2_camera/CMakeFiles/realsense2_camera.dir/src/base_realsense_node.cpp.o
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: realsense/realsense-2.2.0/realsense2_camera/CMakeFiles/realsense2_camera.dir/build.make
-/home/casch/ws_moveit/devel/lib/librealsense2_camera.so: /usr/lib/x86_64-linux-gnu/librealsense2.so.2.25.0
+/home/casch/ws_moveit/devel/lib/librealsense2_camera.so: /usr/local/lib/librealsense2.so.2.25.0
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: /opt/ros/melodic/lib/libnodeletlib.so
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: /opt/ros/melodic/lib/libbondcpp.so
 /home/casch/ws_moveit/devel/lib/librealsense2_camera.so: /opt/ros/melodic/lib/libcv_bridge.so
