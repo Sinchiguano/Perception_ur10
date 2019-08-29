@@ -69,8 +69,3 @@ if __name__ == '__main__':
     camObj=camera()
     main()
 
-#filewriter.writerow(computation_time+aux_rmse+min_rmse+aux_fitness+max_fitness)
-# #pose_calibration.append(np.ravel([pose_TCP.position.x, pose_TCP.position.y ,pose_TCP.position.z]))
-# pose_calibration.append([pose_TCP.position.x, pose_TCP.position.y ,pose_TCP.position.z])
-# pose_calibration.append([pose_TCP.orientation.x, pose_TCP.orientation.y,pose_TCP.orientation.z,pose_TCP.orientation.w])
-# print('pose_calibration:\n{}'.format(pose_calibration))

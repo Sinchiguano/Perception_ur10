@@ -20,7 +20,7 @@ rgbd_='3d_rgbd/'
 def load_point_clouds(voxel_size=0.0):
     pcds = []
 
-    for i in range(1,6):
+    for i in range(1,18):
         #pcd = read_point_cloud("TestData/ICP/cloud_bin_%d.pcd" % i)
         pcd = read_point_cloud("3d_rgbd/%d.ply" % i)
         #pcd = read_point_cloud("3d_cloud/%d.ply" % i)

@@ -24,16 +24,36 @@ sys.path.insert(0, '/home/casch/ws_moveit/src/perception_cvut/src/project')
 from thesis_class import *
 
 
-def display_objects(cloud1,cloud2):
-    pcloud1 = read_point_cloud(cloud1)
-    pcloud2 = read_point_cloud(cloud2)
-    print("Showing pcloud1 (red) and pcloud2 (gray): ")
-    pcloud1.paint_uniform_color([1, 0, 0])
-    pcloud2.paint_uniform_color([0.8, 0.8, 0.8])
+# Returns Downsampled version of a point cloud. The bigger the leaf size the less information retained
+def do_voxel_grid_filter(point_cloud, LEAF_SIZE = 0.01):
+    voxel_filter = point_cloud.make_voxel_grid_filter()
+    voxel_filter.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
+    return voxel_filter.filter()
 
-    #draw_geometries([pcloud1, pcloud2])
-    draw_geometries([pcloud2])
 
+# Returns only the point cloud information at a specific range of a specific axis
+def do_passthrough_filter(point_cloud, name_axis = 'z', min_axis = 0.6, max_axis = 1.1):
+    pass_filter = point_cloud.make_passthrough_filter()
+    pass_filter.set_filter_field_name(name_axis)
+    pass_filter.set_filter_limits(min_axis, max_axis)
+    return pass_filter.filter()
+
+# Use RANSAC plane segmentation to separate plane and not plane points
+# Returns inliers (plane) and outliers (not plane)
+def do_ransac_plane_segmentation(point_cloud, max_distance = 0.01):
+
+    segmenter = point_cloud.make_segmenter()
+    segmenter.set_model_type(pcl.SACMODEL_PLANE)
+    segmenter.set_method_type(pcl.SAC_RANSAC)
+    segmenter.set_distance_threshold(max_distance)
+
+    #obtain inlier indices and model coefficients
+    inlier_indices, coefficients = segmenter.segment()
+
+    inliers = point_cloud.extract(inlier_indices, negative = False)
+    outliers = point_cloud.extract(inlier_indices, negative = True)
+
+    return inliers, outliers
 
 def main():
     counter1=0
@@ -41,61 +61,55 @@ def main():
     counter3=0
     
 
-    voxel_size = 0.002    voxel_size = 0.002
+    voxel_size = 0.002 
     max_correspondence_distance_coarse = voxel_size * 15
     max_correspondence_distance_fine = voxel_size * 1.5
     cloud_='3d_cloud/'
     rgbd_='3d_rgbd/'
-    max_correspondence_distance_coarse = voxel_size * 15
-    max_correspondence_distance_fine = voxel_size * 1.5
+    roi_='3d_rgbd_preprocessing/roi_'
+    table_='3d_rgbd_preprocessing/table_'
+    objects_='3d_rgbd_preprocessing/objects_'
 
-    cloud_='3d_cloud/'
-    rgbd_='3d_rgbd/'
-
-    roi_=path_cloud+'roi_name'
-    table_=path_cloud+'table_name'
-    objects_=path_cloud+'objects_name'
+    # roi_='3d_cloud_preprocessing/roi_'
+    # table_='3d_cloud_preprocessing/table_'
+    # objects_='3d_cloud_preprocessing/objects_'
 
     flag=True
 
     rate = rospy.Rate(10) # 10hz
-
+    rgbd_ = [pcl.load(cloud) for cloud in glob.glob(rgbd_+'*pcd')]
     while not rospy.is_shutdown():
         counter1+=1
-
-        #rgbd_ = [pcl.load(rgbd) for rgbd in glob.glob(pc_path+'*pcd')]
-
-        rgbd_ = [pcl.load(rgbd) for rgbd in glob.glob(rgbd_path+'*pcd')]
 
         if flag:
             for i, cloud in enumerate(rgbd_):
 
                 # mask out point cloud in order to get only information in our region of interest, as we don't care about the other parts
-                filter = do_passthrough_filter(point_cloud = cloud,name_axis = 'x', min_axis = -0.5, max_axis = 1.5)
-                filter = do_passthrough_filter(point_cloud = filter,name_axis = 'y', min_axis = -0.5, max_axis = 0.2)
-                pcl.save(filter, roi_name+str(i)+'.pcd')
-
+                filter = do_passthrough_filter(point_cloud = cloud,name_axis = 'x', min_axis = 0.60, max_axis = 1.0)
+                filter = do_passthrough_filter(point_cloud = filter,name_axis = 'y', min_axis = -0.20, max_axis = 0.2)
+                pcl.save(filter, roi_+str(i)+'.pcd')
+                pcl.save(filter, roi_+str(i)+'.ply')
 
                 # Separate the table from everything else
                 table, objects = do_ransac_plane_segmentation(filter, max_distance = 0.01)
-                pcl.save(table, table_name +str(i)+'.pcd')
-                pcl.save(objects,objects_name +str(i)+'.pcd')
-            flag=False
+                pcl.save(table, table_ +str(i)+'.pcd')
+                pcl.save(table, table_ +str(i)+'.ply')
+
+                pcl.save(objects,objects_ +str(i)+'.pcd')
+                pcl.save(objects,objects_ +str(i)+'.ply')
+            #flag=False
 
         for i, cloud in enumerate(rgbd_):
-            # Display the table and the object
-            pcd = read_point_cloud(objects_name +str(i)+'.pcd')
-            write_point_cloud(objects_name +str(i)+'.ply', pcd)
+            pcd = read_point_cloud(objects_ +str(i)+'.pcd')
             draw_geometries([pcd])
 
-        print('------------------')
-        print('counter:',counter1)
+        rate.sleep()
 
     # When everything done, release the capture
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    #camObj=camera()
+    camObj=camera()
     main()
 
 
