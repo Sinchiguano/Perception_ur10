@@ -10,14 +10,13 @@
 Inspired by MoveIt tutorial
 """
 #from ur10_class_01 import *
-import tf
-import tf2_ros
-from tf.transformations import *
+# import tf
+# import tf2_ros
+# from tf.transformations import *
 
 import sys
 sys.path.insert(0, '/home/casch/ws_moveit/src/perception_cvut/src/project')
-from ur10_class import *
-import csv
+from ur_cam_class import *
 
 name_file='joints_realsense.csv'
 
@@ -35,9 +34,10 @@ def main():
 
     pose_calibration=list()
     counter=0
+    #exit()
     while(not rospy.is_shutdown()):
-        frame=camObj.get_image()
-        #frame=cv2.imread('test_real.jpg')
+        #frame=camObj.get_image()
+        frame=cv2.imread('test.jpg')
         if frame is None:
             print('no image!!!')
             continue
@@ -68,4 +68,3 @@ if __name__ == '__main__':
     object_ur10 = UniversalRobot()
     camObj=camera()
     main()
-

@@ -58,7 +58,7 @@ def create_dataset_pointcloud(frame,pc,counter1,tf_cloud):
     write_point_cloud(cloud_+str(counter1)+'.ply', pcd)
     cv2.imwrite(cloud_+str(counter1)+'.jpg', frame)
 
-    source =read_point_cloud(cloud_+str(counter1)+'.ply')
+    #source =read_point_cloud(cloud_+str(counter1)+'.ply')
     #draw_geometries([source])
 
 def create_dataset_rgbd(frame,depth,counter2,tf_rgbd):
@@ -80,8 +80,6 @@ def create_dataset_rgbd(frame,depth,counter2,tf_rgbd):
     #Create point cloud from rgbd imagescloud_='3d_cloud/'
     pcd = create_point_cloud_from_rgbd_image(rgbd_image, pinhole_camera_intrinsic)
 
-    # Flip it, otherwise the pointcloud will be upside down
-    #pcd.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
     pcd.transform(tf_rgbd)
     #save point cloud
     write_point_cloud(rgbd_+str(counter2)+'.pcd', pcd)
@@ -139,18 +137,19 @@ def main():
 
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
+
         if command == ord('p'):
             if not trans==None and not rot==None:
                 counter1+=1
                 tf_cloud=do_csv_file(trans,q2,'3d_cloud/odom_cam.csv')
                 create_dataset_pointcloud(frame,pc,counter1,tf_cloud)
-                
+
         elif command==ord('r'):
             if not trans==None and not rot==None:        #mat=np.vstack((Rq,[0.0,0.0,0.0,1.0]))
                 counter2+=1
                 tf_rgbd=do_csv_file(trans,q2,'3d_rgbd/odom_cam.csv')
                 create_dataset_rgbd(frame,depth,counter2,tf_rgbd)
-                
+
         print('point_cloud2 done: {}'.format(counter1))
         print('rgbd done: {}'.format(counter2))
         #print('tf: world->camera {}'.format(trans,rot))

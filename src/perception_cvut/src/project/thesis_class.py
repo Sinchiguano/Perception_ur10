@@ -60,12 +60,10 @@ import glob
 import matplotlib.pyplot as plt
 from open3d import GlobalOptimizationConvergenceCriteria
 
-
-
 class camera(object):
     def __init__(self):
         # In ROS, nodes are uniquely named.
-        rospy.init_node('camera', anonymous=True)
+        rospy.init_node('camera_Node', anonymous=True)
         #Real sense camera
         rospy.Subscriber('/camera/color/image_raw', Image, self.callback_rgb)
         rospy.Subscriber('/camera/depth/image_rect_raw', Image, self.callback_depth)

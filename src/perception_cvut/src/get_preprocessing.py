@@ -66,18 +66,19 @@ def main():
     max_correspondence_distance_fine = voxel_size * 1.5
     cloud_='3d_cloud/'
     rgbd_='3d_rgbd/'
-    roi_='3d_rgbd_preprocessing/roi_'
-    table_='3d_rgbd_preprocessing/table_'
-    objects_='3d_rgbd_preprocessing/objects_'
+    # roi_='3d_rgbd_preprocessing/roi_'
+    # table_='3d_rgbd_preprocessing/table_'
+    # objects_='3d_rgbd_preprocessing/objects_'
 
-    # roi_='3d_cloud_preprocessing/roi_'
-    # table_='3d_cloud_preprocessing/table_'
-    # objects_='3d_cloud_preprocessing/objects_'
+    roi_='3d_cloud_preprocessing/roi_'
+    table_='3d_cloud_preprocessing/table_'
+    objects_='3d_cloud_preprocessing/objects_'
 
     flag=True
 
     rate = rospy.Rate(10) # 10hz
-    rgbd_ = [pcl.load(cloud) for cloud in glob.glob(rgbd_+'*pcd')]
+    #rgbd_ = [pcl.load(cloud) for cloud in glob.glob(rgbd_+'*pcd')]
+    rgbd_ = [pcl.load(cloud) for cloud in glob.glob(cloud_+'*pcd')]
     while not rospy.is_shutdown():
         counter1+=1
 
