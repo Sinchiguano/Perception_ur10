@@ -111,8 +111,8 @@ class UniversalRobot(object):
     # set the maximum velocity of the joint values
     #move_group.set_max_velocity_scaling_factor(0.035)
     # set the maximum velocity of the joint values
-    move_group.set_max_velocity_scaling_factor(0.04)
-    move_group.set_max_acceleration_scaling_factor(0.02)
+    move_group.set_max_velocity_scaling_factor(0.08)
+    move_group.set_max_acceleration_scaling_factor(0.04)
     minX=0.10
     minY=0.10
     minZ=0.10
@@ -188,7 +188,7 @@ class UniversalRobot(object):
     ## end-effector:
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation=tmp_pose.orientation
-    pose_goal.position = tmp_pose.position
+    pose_goal.position = tmp_pose.position   
 
     move_group.set_pose_target(pose_goal)
     move_group.plan()

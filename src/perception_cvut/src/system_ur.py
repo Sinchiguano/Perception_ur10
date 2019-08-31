@@ -127,8 +127,8 @@ def do_publishing_pose(br,transformation):
     t.header.stamp = rospy.Time.now()
     t.header.frame_id = 'world'
     t.child_frame_id = 'pose_object'
-    t.transform.translation.x = pose_translation[0]#-0.06
-    t.transform.translation.y = pose_translation[1]#-0.05
+    t.transform.translation.x = pose_translation[0]#+0.02
+    t.transform.translation.y = pose_translation[1]#-0.02
     t.transform.translation.z = pose_translation[2]#+0.05
     t.transform.rotation.w = pose_quaternion[3]
     t.transform.rotation.x = pose_quaternion[0]
@@ -173,6 +173,7 @@ def main():
 
     #camera-home position from where the point cloud is taken. (It can change it does not matter)
     object_ur10.go_to_joint_state([0.018217895179986954,  -1.7413442770587366,  1.7994475364685059,  -0.47932321230043584,  1.5953648090362549,  -0.018981281911031544] )
+
     while not rospy.is_shutdown():
         # Capture 2D-data
         frame=camObj.get_image()
@@ -225,7 +226,7 @@ def main():
             #pcl.save(filter,scene_path +'filter_'+str(counter1)+'.ply' )
             print('filter done!')
 
-            # Segmentation process in order to separate the objecscene_path+'objects_'+str(counter1)+'.pcd't from table
+            # Segmentation process in order to separate the objecscene_path+'objects_'+str(count   <include file="$(find realsense2_camera)/launch/rs_camera.launch">
             table, objects = do_ransac_plane_segmentation(filter, max_distance = 0.01)
             pcl.save(objects,scene_path +'objects_'+str(counter1)+'.pcd' )
             pcl.save(objects,scene_path +'objects_'+str(counter1)+'.ply' )

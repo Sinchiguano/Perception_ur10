@@ -1655,6 +1655,12 @@ ur_msgs_DIR:PATH=
 //Value Computed by CMake
 ur_msgs_SOURCE_DIR:STATIC=/home/casch/ws_moveit/src/universal_robot-melodic-devel/ur_msgs
 
+//Value Computed by CMake
+ur_sim_BINARY_DIR:STATIC=/home/casch/ws_moveit/build/ur_sim
+
+//Value Computed by CMake
+ur_sim_SOURCE_DIR:STATIC=/home/casch/ws_moveit/src/ur_sim
+
 //The directory containing a CMake configuration file for urdf.
 urdf_DIR:PATH=/opt/ros/melodic/share/urdf/cmake
 

@@ -50,13 +50,14 @@ def main():
                 q_goal/=np.linalg.norm(q_goal)
 
                 pose_goal = geometry_msgs.msg.Pose()
-                pose_goal.position.x= trans[0]
-                pose_goal.position.y= trans[1]
-                pose_goal.position.z= trans[2]+0.01
+                pose_goal.position.x= trans[0]+0.02
+                pose_goal.position.y= trans[1]-0.03
+                pose_goal.position.z= trans[2]+0.00
                 pose_goal.orientation.x = q_goal[0]
                 pose_goal.orientation.y = q_goal[1]
                 pose_goal.orientation.z = q_goal[2]
                 pose_goal.orientation.w = q_goal[3]
+
 
                 previous_trans=trans
                 previous_rot==rot
@@ -70,22 +71,19 @@ def main():
         if temp_flag:
             # pose goal of the object to be lift
             object_ur10.go_to_pose_goal(pose_goal)
-            time.sleep(2)
+            time.sleep(0.5)
 
-            # home position for the object
-            pose_goal.position.x= 0.0
-            pose_goal.position.y= 0.0
-            pose_goal.position.z= 0.07
-            object_ur10.go_to_pose_goal(pose_goal)
-            time.sleep(2)
+            #home position for the grasping action 
+            object_ur10.go_to_joint_state([0.007624588906764984,  -1.2646663824664515,  1.7031769752502441,  -0.44650203386415654,  1.5900388956069946,  -0.0073769728290002945])                    
 
-
+            
+            #final position of the object
             object_ur10.go_to_joint_state([0.599541962146759,  -1.2912901083575647,  1.41935396194458,  -0.22077924409975225,  1.773498296737671,  -0.06576806703676397])
-            time.sleep(2)
+            time.sleep(0.5)
             
             # home position for camera
             object_ur10.go_to_joint_state([0.018217895179986954,  -1.7413442770587366,  1.7994475364685059,  -0.47932321230043584,  1.5953648090362549,  -0.018981281911031544] )
-            time.sleep(2)
+            time.sleep(0.5)
             temp_flag=False
 
         r.sleep()

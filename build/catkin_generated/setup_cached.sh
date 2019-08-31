@@ -7,10 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/casch/ws_moveit/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/casch/ws_moveit/devel/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/home/casch/ws_moveit/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD="/home/casch/ws_moveit/build"
-export PYTHONPATH="/home/casch/ws_moveit/devel/lib/python2.7/dist-packages:$PYTHONPATH"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/casch/ws_moveit/devel/share/common-lisp"
-export ROS_PACKAGE_PATH="/home/casch/ws_moveit/src:$ROS_PACKAGE_PATH"
