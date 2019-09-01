@@ -54,7 +54,7 @@ class UniversalRobot(object):
     ## Instantiate a `PlanningSceneInterface`_ object.  This provides a remote interface
     ## for getting, setting, and updating the robot's internal understanding of the
     ## surrounding world:
-    scene = moveit_commander.PlanningSceneInterface()
+    scene = moveit_commander.PlanningSceneInterface('tool0')
 
     ## Instantiate a `MoveGroupCommander`_ object.  This object is an interface
     ## to a planning group (group of joints). We set the group's name to "panda_arm".
@@ -137,6 +137,7 @@ class UniversalRobot(object):
     self.planning_frame = planning_frame
     self.eef_link = eef_link
     self.group_names = group_names
+    self.gripper_name=''
 
   def go_to_joint_state(self,tmp_joints):
 
@@ -152,6 +153,8 @@ class UniversalRobot(object):
     #plan to the new joint space goal and visualize the plan
     move_group.set_joint_value_target(joint_goal)
     move_group.plan()
+    # plan=move_group.plan()
+    # display_trajectory(plan)
 
     # #for safety reasons
     # print "\n============ Enter #1 to execute or any number to skip the plan!"
@@ -188,16 +191,12 @@ class UniversalRobot(object):
     ## end-effector:
     pose_goal = geometry_msgs.msg.Pose()
     pose_goal.orientation=tmp_pose.orientation
-    pose_goal.position = tmp_pose.position   
+    pose_goal.position = tmp_pose.position
 
     move_group.set_pose_target(pose_goal)
     move_group.plan()
-    #for safety reasons
-    # print "\n============ Enter #1 to execute or any number to skip the plan!"
-    # temp=raw_input()
-    # control_signal=int(temp)
 
-
+    #display_trajectory(plan)
     #if control_signal==1:
     ## Now, we call the planner to compute the plan and execute it.
     move_group.go(wait=True)
@@ -346,7 +345,7 @@ class UniversalRobot(object):
     #changed
     box_pose.header.frame_id = "tool0"
     box_pose.pose.orientation.w = 1.0
-    box_pose.pose.position.z = 0.07 # slightly above the end effector
+    box_pose.pose.position.z = 0.05# slightly above the end effector
     box_name = "box"
     scene.add_box(box_name, box_pose, size=(0.1, 0.1, 0.1))
 
@@ -375,9 +374,8 @@ class UniversalRobot(object):
     ## robot, we set ``grasping_group = 'hand'``. If you are using a different robot,
     ## you should change this value to the name of your end effector group name.
     grasping_group = 'endeffector'
-    #grasping_group = 'eef_link
     touch_links = robot.get_link_names(group=grasping_group)
-    scene.attach_box(eef_link, box_name, touch_links=touch_links)
+    scene.attach_box('tool0', box_name, touch_links=touch_links)
 
     # We wait for the planning scene to update.
     return self.wait_for_state_update(box_is_attached=True, box_is_known=False, timeout=timeout)
@@ -389,10 +387,35 @@ class UniversalRobot(object):
 
     ## Detaching Objects from the Robot
     ## We can also detach and remove the object from the planning scene:
-    scene.remove_attached_object(eef_link, name=box_name)
+    scene.remove_attached_object('tool0', name=box_name)
 
     # We wait for the planning scene to update.
     return self.wait_for_state_update(box_is_known=True, box_is_attached=False, timeout=timeout)
+
+  def attach_gripper(self, timeout=4):
+    # Copy class variables to local variables to make the web tutorials more clear.
+    # In practice, you should use the class variables directly unless you have a good
+    # reason not to.
+    gripper_name = self.box_name
+    robot = self.robot
+    scene = self.scene
+    eef_link = self.eef_link
+    group_names = self.group_names
+
+    ## BEGIN_SUB_TUTORIAL attach_object
+    ## Attaching Objects to the Robot
+    ## Next, we will attach the box to the Panda wrist. Manipulating objects requires the
+    ## robot be able to touch them without the planning scene reporting the contact as a
+    ## collision. By adding link names to the ``touch_links`` array, we are telling the
+    ## planning scene to ignore collisions between those links and the box. For the Panda
+    ## robot, we set ``grasping_group = 'hand'``. If you are using a different robot,
+    ## you should change this value to the name of your end effector group name.
+    grasping_group = 'endeffector'
+    touch_links = robot.get_link_names(group=grasping_group)
+    scene.attach_box('tool0', gripper_name, touch_links=touch_links)
+
+    # We wait for the planning scene to update.
+    return self.wait_for_state_update(box_is_attached=True, box_is_known=False, timeout=timeout)
 
   def remove_box(self, timeout=4):
     box_name = self.box_name
@@ -405,75 +428,31 @@ class UniversalRobot(object):
     # We wait for the planning scene to update.
     return self.wait_for_state_update(box_is_attached=False, box_is_known=False, timeout=timeout)
 
+  def add_gripper(self, timeout=4):
+    gripper_name = self.gripper_name
+    scene = self.scene
 
-g_timestamp_last_move = 0
-g_index_last_move = 0
+    gripper_pose = geometry_msgs.msg.PoseStamped()
+    gripper_pose.header.frame_id = "tool0"
+    gripper_pose.pose.position.x = 0.00# slightly above the end effector
+    gripper_pose.pose.position.y = 0.00# slightly above the end effector
+    gripper_pose.pose.position.z = -0.02# slightly above the end effector
+    gripper_name = "gripper"
 
-poses=list()
+    scene.add_mesh(gripper_name, gripper_pose, 'mesh/gripper.stl',size=(0.001, 0.001, 0.001))
+    self.gripper_name=gripper_name
 
+    return self.wait_for_state_update(box_is_known=True, timeout=timeout)
+  def remove_gripper(self, timeout=4):
+    gripper_name = self.gripper_name
+    scene = self.scene
 
-goal_0=geometry_msgs.msg.Pose()
-goal_1 = geometry_msgs.msg.Pose()
-goal_2 = geometry_msgs.msg.Pose()
-goal_3 = geometry_msgs.msg.Pose()
-goal_4 = geometry_msgs.msg.Pose()
-goal_5 = geometry_msgs.msg.Pose()
-goal_6 = geometry_msgs.msg.Pose()
-goal_7 = geometry_msgs.msg.Pose()
-goal_8 = geometry_msgs.msg.Pose()
-goal_9 = geometry_msgs.msg.Pose()
+    ## Removing Objects from the Planning Scene
+    ## We can remove the box from the world.
+    scene.remove_world_object(gripper_name)
 
-
-home = goal_0
-home.position.x,home.position.y,home.position.z= [0.6044897497971731,  0.2611879818362852,  0.5973805032611594]
-home.orientation.x,home.orientation.y,home.orientation.z,home.orientation.w=[0.7136097533836827,  0.7002567082360588,  0.01392144931313463,  0.014417201361588824]
-
-
-goal_1.position.x,goal_1.position.y,goal_1.position.z= [0.6792170687038906,  0.2595806102601011,  0.6004240152169116]
-goal_1.orientation.x,goal_1.orientation.y,goal_1.orientation.z,goal_1.orientation.w= [0.7137240438370314,  0.7001395499445111,  0.013934957389277303,  0.014436648328879434]
-
-
-goal_2.position.x,goal_2.position.y,goal_2.position.z=[0.7300653931760371,  0.258636102036575,  0.6024867866803]
-goal_2.orientation.x,goal_2.orientation.y,goal_2.orientation.z,goal_2.orientation.w=[0.7136432029536898,  0.7002228892704451,  0.013914804386057023,  0.014410497515580047]
-
-
-goal_3.position.x,goal_3.position.y,goal_3.position.z= [0.7035537422125395,  0.15545948941081,  0.6214753637348197]
-goal_3.orientation.x,goal_3.orientation.y,goal_3.orientation.z,goal_3.orientation.w=[0.7928890857866161,  0.6093131455713582,  0.0018206948021379473,  0.007814943687480098]
-
-goal_4.position.x,goal_4.position.y,goal_4.position.z=[0.7288303826582216,  0.18682625560701704,  0.6025412818627581]
-goal_4.orientation.x,goal_4.orientation.y,goal_4.orientation.z,goal_4.orientation.w=[0.71375435762414,  0.7001099601135318,  0.013979280196329043,  0.014329705076260793]
-
-goal_5.position.x,goal_5.position.y,goal_5.position.z=[0.6767072279760193,  0.18782601094693227,  0.6003188598945391]
-goal_5.orientation.x,goal_5.orientation.y,goal_5.orientation.z,goal_5.orientation.w= [0.7137013273247063,  0.7001685843065901,  0.013873822129271239,  0.014208658789036311]
-
-
-goal_6.position.x,goal_6.position.y,goal_6.position.z=[0.6755934847070446,  0.1308157557420405,  0.6003676886876154]
-goal_6.orientation.x,goal_6.orientation.y,goal_6.orientation.z,goal_6.orientation.w= [0.7137591297052486,  0.7001061742770575,  0.0139653493400223,  0.014290504517334367]
-
-goal_7.position.x,goal_7.position.y,goal_7.position.z= [0.6207439707612881,  0.13164862449093792,  0.598265138984852]
-goal_7.orientation.x,goal_7.orientation.y,goal_7.orientation.z,goal_7.orientation.w= [0.71375108394431,  0.7001134267654829,  0.013977021486629444,  0.014325596021725277]
-
-goal_8.position.x,goal_8.position.y,goal_8.position.z=  [0.5568401162361492,  0.13293034872029502,  0.5956477647060543]
-goal_8.orientation.x,goal_8.orientation.y,goal_8.orientation.z,goal_8.orientation.w= [0.7137194188717318,  0.7001472443196016,  0.013946052695757967,  0.014280581615348802]
-
-
-goal_9.position.x,goal_9.position.y,goal_9.position.z=   [0.5576243412091563,  0.17938184053692052,  0.5957389333994288]
-goal_9.orientation.x,goal_9.orientation.y,goal_9.orientation.z,goal_9.orientation.w= [0.7137293998692598,  0.7001305777887191,  0.014088824004738721,  0.014457622407030768]
-
-
-poses.append(home)
-poses.append(goal_1)
-poses.append(goal_2)
-poses.append(goal_3)
-poses.append(goal_4)
-poses.append(goal_5)
-poses.append(goal_6)
-poses.append(goal_7)
-poses.append(goal_8)
-poses.append(goal_9)
-
-
-
+    # We wait for the planning scene to update.
+    return self.wait_for_state_update(box_is_attached=False, box_is_known=False, timeout=timeout)
 
 ##############################
 import sys, time
@@ -550,8 +529,6 @@ class camera(object):
         # rospy.Subscriber('/camera/depth/points', PointCloud2, self.callback_pointCloud)
         # # rospy.Subscriber('/camera/rgb/camera_info', CameraInfo,self.infoColorCallback)
         # # rospy.Subscriber('/camera/depth/camera_info', CameraInfo, self.callback_depth)
-
-
         self.cv_image1=None
         self.cv_image2=None
         self.pc=None
@@ -601,3 +578,73 @@ class camera(object):
         return self.cv_image2
     def get_point_cloud(self):
         return self.pc
+
+
+
+
+
+# g_timestamp_last_move = 0
+# g_index_last_move = 0
+#
+# poses=list()
+#
+#
+# goal_0=geometry_msgs.msg.Pose()
+# goal_1 = geometry_msgs.msg.Pose()
+# goal_2 = geometry_msgs.msg.Pose()
+# goal_3 = geometry_msgs.msg.Pose()
+# goal_4 = geometry_msgs.msg.Pose()
+# goal_5 = geometry_msgs.msg.Pose()
+# goal_6 = geometry_msgs.msg.Pose()
+# goal_7 = geometry_msgs.msg.Pose()
+# goal_8 = geometry_msgs.msg.Pose()
+# goal_9 = geometry_msgs.msg.Pose()
+#
+#
+# home = goal_0
+# home.position.x,home.position.y,home.position.z= [0.6044897497971731,  0.2611879818362852,  0.5973805032611594]
+# home.orientation.x,home.orientation.y,home.orientation.z,home.orientation.w=[0.7136097533836827,  0.7002567082360588,  0.01392144931313463,  0.014417201361588824]
+#
+#
+# goal_1.position.x,goal_1.position.y,goal_1.position.z= [0.6792170687038906,  0.2595806102601011,  0.6004240152169116]
+# goal_1.orientation.x,goal_1.orientation.y,goal_1.orientation.z,goal_1.orientation.w= [0.7137240438370314,  0.7001395499445111,  0.013934957389277303,  0.014436648328879434]
+#
+#
+# goal_2.position.x,goal_2.position.y,goal_2.position.z=[0.7300653931760371,  0.258636102036575,  0.6024867866803]
+# goal_2.orientation.x,goal_2.orientation.y,goal_2.orientation.z,goal_2.orientation.w=[0.7136432029536898,  0.7002228892704451,  0.013914804386057023,  0.014410497515580047]
+#
+#
+# goal_3.position.x,goal_3.position.y,goal_3.position.z= [0.7035537422125395,  0.15545948941081,  0.6214753637348197]
+# goal_3.orientation.x,goal_3.orientation.y,goal_3.orientation.z,goal_3.orientation.w=[0.7928890857866161,  0.6093131455713582,  0.0018206948021379473,  0.007814943687480098]
+#
+# goal_4.position.x,goal_4.position.y,goal_4.position.z=[0.7288303826582216,  0.18682625560701704,  0.6025412818627581]
+# goal_4.orientation.x,goal_4.orientation.y,goal_4.orientation.z,goal_4.orientation.w=[0.71375435762414,  0.7001099601135318,  0.013979280196329043,  0.014329705076260793]
+#
+# goal_5.position.x,goal_5.position.y,goal_5.position.z=[0.6767072279760193,  0.18782601094693227,  0.6003188598945391]
+# goal_5.orientation.x,goal_5.orientation.y,goal_5.orientation.z,goal_5.orientation.w= [0.7137013273247063,  0.7001685843065901,  0.013873822129271239,  0.014208658789036311]
+#
+#
+# goal_6.position.x,goal_6.position.y,goal_6.position.z=[0.6755934847070446,  0.1308157557420405,  0.6003676886876154]
+# goal_6.orientation.x,goal_6.orientation.y,goal_6.orientation.z,goal_6.orientation.w= [0.7137591297052486,  0.7001061742770575,  0.0139653493400223,  0.014290504517334367]
+#
+# goal_7.position.x,goal_7.position.y,goal_7.position.z= [0.6207439707612881,  0.13164862449093792,  0.598265138984852]
+# goal_7.orientation.x,goal_7.orientation.y,goal_7.orientation.z,goal_7.orientation.w= [0.71375108394431,  0.7001134267654829,  0.013977021486629444,  0.014325596021725277]
+#
+# goal_8.position.x,goal_8.position.y,goal_8.position.z=  [0.5568401162361492,  0.13293034872029502,  0.5956477647060543]
+# goal_8.orientation.x,goal_8.orientation.y,goal_8.orientation.z,goal_8.orientation.w= [0.7137194188717318,  0.7001472443196016,  0.013946052695757967,  0.014280581615348802]
+#
+#
+# goal_9.position.x,goal_9.position.y,goal_9.position.z=   [0.5576243412091563,  0.17938184053692052,  0.5957389333994288]
+# goal_9.orientation.x,goal_9.orientation.y,goal_9.orientation.z,goal_9.orientation.w= [0.7137293998692598,  0.7001305777887191,  0.014088824004738721,  0.014457622407030768]
+#
+#
+# poses.append(home)
+# poses.append(goal_1)
+# poses.append(goal_2)
+# poses.append(goal_3)
+# poses.append(goal_4)
+# poses.append(goal_5)
+# poses.append(goal_6)
+# poses.append(goal_7)
+# poses.append(goal_8)
+# poses.append(goal_9)

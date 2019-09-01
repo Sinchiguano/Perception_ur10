@@ -10,6 +10,7 @@
 Inspired by MoveIt tutorial
 """
 
+
 import sys
 import copy
 import rospy

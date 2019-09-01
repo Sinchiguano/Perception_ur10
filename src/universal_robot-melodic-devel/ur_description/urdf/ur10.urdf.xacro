@@ -290,22 +290,47 @@
     <joint name="${prefix}ee_fixed_joint" type="fixed">
       <parent link="${prefix}wrist_3_link" />
       <child link = "${prefix}ee_link" />
-      <!-- changed by cesar <origin xyz="0.0 ${wrist_3_length} 0.0" rpy="0.0 0.0 ${pi/2.0}" />  -->
+      <!-- changed by cesar the original is: <origin xyz="0.0 ${wrist_3_length} 0.0" rpy="0.0 0.0 ${pi/2.0}" /> 0.00 0.1672 0.24  -->
       <origin xyz="0.00 0.1672 0.24" rpy="0.0 0.0 ${pi/2.0}" />
-
     </joint>
-
+	<!-- />///////////////////start//////////////////////////////// -->
     <link name="${prefix}ee_link">
+    	
+      <collision>
+        <geometry>
+            <box size="0.110 0.080 0.050" />
+        </geometry>
+        <origin xyz="0 -0.035 -0.2162" rpy="0 0 0" />
+      </collision>
+      <collision>
+        <geometry>
+            <cylinder radius="0.075" length="0.190" />
+        </geometry>
+        <origin xyz="0 0 -0.095" rpy="0 0 0" />
+      </collision>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://ur_description/meshes/ur10/visual/gripper.dae" />
+        </geometry>
+        <origin  xyz="-0.075 0.00 -0.24" rpy="${-pi/2.0} 0 ${-pi/2.0}" />
+      </visual>
+
+    </link>
+
+	<!-- <origin  xyz="0 -0.075 -0.2162" rpy="${-pi / 2.0} 0 0" />///////////////////END//////////////////////////////// -->
+	<!-- /////////////////////    <link name="${prefix}ee_link">
       <collision>
         <geometry>
           <box size="0.01 0.01 0.01"/>
         </geometry>
         <origin rpy="0 0 0" xyz="-0.01 0 0"/>
       </collision>
-    </link>
+    </link>////////////////////////////// original-->
 
     <xacro:ur_arm_transmission prefix="${prefix}" hw_interface="${transmission_hw_interface}" />
     <xacro:ur_arm_gazebo prefix="${prefix}" />
+	
 
     <!-- ROS base_link to UR 'Base' Coordinates transform -->
     <link name="${prefix}base"/>

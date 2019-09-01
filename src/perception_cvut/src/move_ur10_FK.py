@@ -64,8 +64,8 @@ def main():
     br = tf2_ros.TransformBroadcaster()
     r=rospy.Rate(10)
 
-    print "============ Press `Enter` to start start sample poses..."
-    raw_input()
+    # print "============ Press `Enter` to start start sample poses..."
+    # raw_input()
 
     while(not rospy.is_shutdown()):
         try:
@@ -79,14 +79,14 @@ def main():
             return
 
 if __name__ == '__main__':
-    print ""
-    print "----------------------------------------------------------"
-    print "Welcome to the MoveIt MoveGroup Python Interface"
-    print "----------------------------------------------------------"
-    print "Press Ctrl-D to exit at any time"
-    print ""
-    print "============ Press `Enter` to begin the moveit_commander ..."
-    raw_input()
+    # print ""
+    # print "----------------------------------------------------------"
+    # print "Welcome to the MoveIt MoveGroup Python Interface"
+    # print "----------------------------------------------------------"
+    # print "Press Ctrl-D to exit at any time"
+    # print ""
+    # print "============ Press `Enter` to begin the moveit_commander ..."
+    # raw_input()
     #create an object in order to get acces to my UniversalRobot
     object_ur10 = UniversalRobot()
     main()
